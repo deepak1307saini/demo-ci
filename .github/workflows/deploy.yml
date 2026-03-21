@@ -38,10 +38,9 @@ jobs:
     - name: SSH and Deploy to EC2
       uses: appleboy/ssh-action@v1
       with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        port: ${{ secrets.PORT }}
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_KEY }}
         script: |
           docker stop spring-demo || true
           delete rm spring-demo || true
