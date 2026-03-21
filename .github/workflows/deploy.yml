@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - name: Build the Docker image
-      run: actions/checkout@v4
+      uses: actions/checkout@v4
 
     - name: Setup Java
       uses: actions/setup-java@v5
