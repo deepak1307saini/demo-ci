@@ -3,6 +3,7 @@ name: Docker build-> push-> deploy
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:  # Actions tab → Run workflow (manual deploy)
 
 jobs:
 

@@ -44,7 +44,13 @@
 
 ## Part 2 — Fully automated (GitHub Actions → Docker Hub → EC2)
 
-On every **push to `main`**, the workflow in `.github/workflows/deploy.yml`:
+The workflow runs **when you push to `main`** and can also be started **by hand**:
+
+- GitHub repo → **Actions** → workflow **Docker build-> push-> deploy** → **Run workflow** → branch **main** → **Run workflow**.
+
+That uses the **latest commit** on the branch you select (usually `main`) — same steps as an automatic deploy.
+
+On each run, `.github/workflows/deploy.yml`:
 
 1. Checks out the repo.
 2. Logs in to Docker Hub.
@@ -62,7 +68,7 @@ On every **push to `main`**, the workflow in `.github/workflows/deploy.yml`:
 | `EC2_USERNAME` | SSH user, usually `ec2-user` on Amazon Linux. |
 | `EC2_KEY` | **Full contents** of the private `.pem` file (paste from `cat demo-keypair.pem`), including `BEGIN`/`END` lines. |
 
-After secrets are set, you only **push code to `main`**; no manual `docker build` / `push` / SSH for routine deploys.
+After secrets are set, deploy by **pushing to `main`** or using **Run workflow** — no local `docker build` / `push` / SSH for routine deploys.
 
 ### EC2 prerequisites for automation
 
