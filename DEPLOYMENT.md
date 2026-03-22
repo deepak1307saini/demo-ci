@@ -42,21 +42,16 @@
 
 ---
 
-## Part 2 — Fully automated (GitHub Actions → Docker Hub → EC2)
+## Part 2 — GitHub Actions (manual only, no push trigger)
 
-The workflow runs **when you push to `main`** and can also be started **by hand**:
+Nothing runs on `git push`. There are **two separate workflows**, each with its own **Run workflow** button:
 
-- GitHub repo → **Actions** → workflow **Docker build-> push-> deploy** → **Run workflow** → branch **main** → **Run workflow**.
+| Workflow file | Name in Actions tab | What it does |
+|----------------|---------------------|--------------|
+| `.github/workflows/build.yml` | **Docker build and push** | Checkout → Docker Hub login → `docker build` → `docker push` |
+| `.github/workflows/deploy.yml` | **Deploy to EC2** | SSH to EC2 → `docker pull` → restart container on port **8080** |
 
-That uses the **latest commit** on the branch you select (usually `main`) — same steps as an automatic deploy.
-
-On each run, `.github/workflows/deploy.yml`:
-
-1. Checks out the repo.
-2. Logs in to Docker Hub.
-3. Builds the image with `docker build` and tags it as `YOUR_USER/hello:latest`.
-4. Pushes that image to Docker Hub.
-5. SSHs to EC2 and runs: stop/remove old container, `docker pull`, `docker run` with port **8080**.
+**Typical flow:** run **Docker build and push** when you have new code; run **Deploy to EC2** when you want the server to pull that image (you can redeploy without rebuilding, e.g. after config changes on the server or to roll out an image you already pushed).
 
 ### GitHub repository secrets (Settings → Secrets and variables → Actions)
 
@@ -68,7 +63,7 @@ On each run, `.github/workflows/deploy.yml`:
 | `EC2_USERNAME` | SSH user, usually `ec2-user` on Amazon Linux. |
 | `EC2_KEY` | **Full contents** of the private `.pem` file (paste from `cat demo-keypair.pem`), including `BEGIN`/`END` lines. |
 
-After secrets are set, deploy by **pushing to `main`** or using **Run workflow** — no local `docker build` / `push` / SSH for routine deploys.
+After secrets are set, use **Actions → Run workflow** on whichever workflow you need (build, deploy, or both in order).
 
 ### EC2 prerequisites for automation
 

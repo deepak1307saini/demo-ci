@@ -18,4 +18,9 @@ public class HealthController {
     public ResponseEntity<?> getHealthv2() {
         return ResponseEntity.ok("I'm in a healthy v2...");
     }
+
+    @GetMapping("/v3")
+    public ResponseEntity<?> getHealthv3() {
+        return ResponseEntity.ok("I'm in a healthy v3...");
+    }
 }
